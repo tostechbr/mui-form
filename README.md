@@ -1,8 +1,3 @@
-Um bom arquivo README.md deve fornecer uma visão geral do projeto, instruções de configuração, como executar o projeto, dependências e outras informações relevantes. Aqui está um exemplo de README.md para o seu projeto:
-
-### `README.md`
-
-```markdown
 # Meu Projeto React com Material-UI
 
 Este é um projeto de exemplo usando React, Vite e Material-UI. O projeto inclui um formulário de registro com navegação lateral.
@@ -37,9 +32,9 @@ Este é um projeto de exemplo usando React, Vite e Material-UI. O projeto inclui
 
 2. Instale as dependências:
 
-   ```bash
-   npm install
-   ```
+```bash
+  npm install
+```
 
 ## Executar o Projeto
 
@@ -96,5 +91,3 @@ Para mais informações, entre em contato através de [tiagosan.dev@gmail.com](m
    git commit -m "Add README.md"
    git push origin main
    ```
-
-Isso deve fornecer uma visão geral clara e útil do seu projeto, facilitando para outras pessoas entenderem e contribuírem.
