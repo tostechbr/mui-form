@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button, TextField, Box } from '@mui/material';
+import { Button, TextField, Box, CircularProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const UserForm = ({ onRegister }) => {
@@ -8,11 +9,12 @@ const UserForm = ({ onRegister }) => {
     sobrenome: '',
     email: '',
     telefone: '',
-    mensagem: '',
     senha: ''
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validate = () => {
     let tempErrors = {};
@@ -20,7 +22,6 @@ const UserForm = ({ onRegister }) => {
     tempErrors.sobrenome = formData.sobrenome ? "" : "Sobrenome é obrigatório";
     tempErrors.email = (/$^|.+@.+..+/).test(formData.email) ? "" : "Email inválido";
     tempErrors.telefone = formData.telefone.length > 9 ? "" : "Telefone inválido";
-    tempErrors.mensagem = formData.mensagem ? "" : "Mensagem é obrigatória";
     tempErrors.senha = formData.senha.length > 5 ? "" : "Senha deve ter pelo menos 6 caracteres";
     setErrors(tempErrors);
     return Object.values(tempErrors).every(x => x === "");
@@ -31,10 +32,13 @@ const UserForm = ({ onRegister }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      onRegister(formData);
+      setLoading(true);
+      await onRegister(formData);
+      setLoading(false);
+      navigate('/dashboard');
     }
   };
 
@@ -91,15 +95,6 @@ const UserForm = ({ onRegister }) => {
         required 
       />
       <TextField 
-        label="Mensagem" 
-        name="mensagem" 
-        value={formData.mensagem} 
-        onChange={handleChange} 
-        error={!!errors.mensagem} 
-        helperText={errors.mensagem} 
-        required 
-      />
-      <TextField 
         label="Senha" 
         name="senha" 
         type="password" 
@@ -109,7 +104,28 @@ const UserForm = ({ onRegister }) => {
         helperText={errors.senha} 
         required 
       />
-      <Button type="submit" variant="contained">Enviar</Button>
+      <Box sx={{ position: 'relative' }}>
+        <Button 
+          type="submit" 
+          variant="contained" 
+          disabled={loading}
+          sx={{ width: '100%' }}
+        >
+          {loading ? 'Enviando...' : 'Enviar'}
+        </Button>
+        {loading && (
+          <CircularProgress
+            size={24}
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        )}
+      </Box>
     </Box>
   );
 };
